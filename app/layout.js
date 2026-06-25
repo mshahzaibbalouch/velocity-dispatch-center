@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Solaris Transit System",
+  title: "Velocity Dispatch Center",
   description: "A high-performance taxi dispatch dashboard",
 };
 
