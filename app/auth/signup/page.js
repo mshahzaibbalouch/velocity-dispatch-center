@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Mail, Lock, Eye, EyeOff, User, Building } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import Icon from "@/app/components/Icon";
 
@@ -62,24 +62,33 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
-           
+
             <label className="block">
-              <span className="text-xs text-surface-muted">Work Email</span>
+              <span className="text-xs text-surface-muted">
+                DISPATCHER EMAIL
+              </span>
               <div className="relative flex-1">
-                <Mail className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-muted" />
+                <Lock className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-muted" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="john@company.com"
+                  placeholder="name@velocity.com"
                   className="rounded-4xl border border-white/10 bg-surface ps-10 px-3 py-3 text-sm text-on-surface outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/15 w-full"
                 />
               </div>
             </label>
+
             <label className="block">
               <div className="flex justify-between">
                 <span className="text-xs text-surface-muted">ACCESS KEY</span>
+                <Link
+                  href="/forgot-password"
+                  className="text-sm text-amber-400 hover:underline font-semibold"
+                >
+                  Forgot Password?
+                </Link>
               </div>
 
               <div className="mt-2 flex items-center">
@@ -122,12 +131,12 @@ export default function LoginPage() {
             </button>
           </form>
           <div className="mt-6 text-center text-sm text-surface-muted">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <Link
               href="/auth/signup"
               className="text-amber-400 hover:underline font-semibold"
             >
-              Sign In
+              Sign Up
             </Link>
           </div>
         </div>
