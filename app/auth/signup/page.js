@@ -29,7 +29,6 @@ export default function SignupPage() {
       setError("Access key must be at least 8 characters");
       return;
     }
-    console.log(form);
     
     setLoading(true);
 

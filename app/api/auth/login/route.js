@@ -1,29 +1,40 @@
 import { getDashboardRoute } from '@/lib/auth';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import dbConnect from '@/lib/mongodb';
+import User from '@/models/User';
 
 export async function POST(req) {
   try {
     const { email, key, remember } = await req.json();
 
-    // Basic validation (replace with real auth logic)
     if (!email || !key || typeof email !== 'string' || typeof key !== 'string') {
       return new Response(JSON.stringify({ error: 'Missing credentials' }), { status: 400, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Mock verification: accept any credentials where key length >= 4
-    if (key.length < 4) {
-      return new Response(JSON.stringify({ error: 'Invalid credentials' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+    await dbConnect();
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
     }
 
-    // Create a simple session id and derive a route
-    const role = email.toLowerCase().includes('admin') ? 'admin' : email.toLowerCase().includes('driver') ? 'driver' : 'dispatcher';
-    const sessionId = `${role}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    const isPasswordValid = await bcrypt.compare(key, user.password);
+    if (!isPasswordValid) {
+      return new Response(JSON.stringify({ error: 'Invalid email or password' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
+    }
 
-    const maxAge = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 8; // seconds
+    const token = jwt.sign(
+      { id: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: remember ? '30d' : '8h' },
+    );
+
+    const maxAge = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 8;
     const secure = process.env.NODE_ENV === 'production';
+    const cookie = `__ds_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}; ${secure ? 'Secure;' : ''}`;
 
-    const cookie = `__ds_sid=${sessionId}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}; ${secure ? 'Secure;' : ''}`;
-
-    const redirect = getDashboardRoute(sessionId) || '/dashboard';
+    const redirect = getDashboardRoute(token) || '/dashboard';
 
     return new Response(JSON.stringify({ ok: true, redirect }), {
       status: 200,
@@ -33,6 +44,7 @@ export async function POST(req) {
       },
     });
   } catch (err) {
+    console.error('LOGIN ERROR:', err);
     return new Response(JSON.stringify({ error: 'Server error' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
   }
 }

@@ -1,9 +1,7 @@
-import React from "react";
-
 export default function Icon({ icon: IconComponent, className, onClick }) {
   if (!IconComponent) {
     return null;
   }
 
-  return <IconComponent onClick={() => onClick()} className={className} />;
+  return <IconComponent onClick={onClick} className={className} />;
 }

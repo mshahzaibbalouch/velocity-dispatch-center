@@ -7,8 +7,7 @@ import User from "@/models/User";
 
 export async function POST(req) {
   try {
-    console.log(req.json);
-    
+    console.log("URI:", process.env.MONGODB_URI);
     const { fullName, email, password, companyName } = await req.json();
     if (!fullName || !email || !password || !companyName) {
       return NextResponse.json(
@@ -33,7 +32,6 @@ export async function POST(req) {
         { status: 409 },
       );
     }
-    debugger;
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -53,8 +51,9 @@ export async function POST(req) {
 
     const secure = process.env.NODE_ENV === "production";
     const cookie = `__ds_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 8}; ${secure ? "Secure;" : ""}`;
+    const redirect = getDashboardRoute(token) || "/dashboard";
 
-    return new Response(JSON.stringify({ ok: true, redirect: "/dashboard" }), {
+    return new Response(JSON.stringify({ ok: true, redirect }), {
       status: 201,
       headers: {
         "Set-Cookie": cookie,
@@ -62,7 +61,7 @@ export async function POST(req) {
       },
     });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+    console.error("SIGNUP ERROR:", err.message, err.stack);
+    return NextResponse.json({ error: err.message }, { status: 500 });
   }
 }

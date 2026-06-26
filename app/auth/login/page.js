@@ -36,7 +36,7 @@ export default function LoginPage() {
       }
 
       // Redirect to dashboard or provided route
-      router.push(data?.redirect || "/dashboard");
+      router.push(data?.redirect || "/");
     } catch (err) {
       setError("Network error");
       setLoading(false);

@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Bell, Search, CircleQuestionMark } from "lucide-react";
+import {
+  Bell,
+  Search,
+  CircleQuestionMark,
+  User,
+  Settings,
+  LogOutIcon,
+} from "lucide-react";
+import Icon from "./Icon";
 
 export default function Navbar() {
   const [isNotificationOpen, setNotificationOpen] = useState(false);
@@ -70,31 +78,29 @@ export default function Navbar() {
                 className="inline-flex items-center gap-3 rounded-3xl border-l-2 border-white px-4 py-3 text-sm text-on-surface transition"
               >
                 <div className="text-left">
-                  <p className="font-medium">Shahzaib</p>
+                  <p className="font-sm">Shahzaib</p>
                 </div>
                 <img
                   src="/assets/images/team/admin.png"
                   alt="Admin profile"
-                  className="h-10 w-10 rounded-full object-cover"
+                  className="h-8 w-8 rounded-full object-cover"
                 />
               </button>
 
               {isProfileOpen && (
-                <div className="absolute right-0 top-full mt-3 w-70 rounded-2xl border border-white/10 bg-surface-container-high p-3 shadow-2xl">
-                  <div className="mb-4 border-b border-white/10 pb-3">
-                    <div className="flex items-center gap-4 rounded-3xl p-3">
+                <div className="absolute z-[999] right-0 top-full mt-3 w-70 rounded-2xl border border-white/10 bg-surface-container-high p-2 shadow-2xl">
+                  <div className="border-b border-white/10 pb-3">
+                    <div className="flex items-center gap-4 rounded-3xl p-1">
                       <img
                         src="/assets/images/team/admin.png"
                         alt="Admin"
-                        className="h-12 w-12 rounded-full object-cover"
+                        className="h-8 w-8 rounded-md object-cover"
                       />
                       <div>
                         <p className="text-sm font-semibold text-on-surface">
-                          Shahzaib
+                          Shahzaib Balouch
                         </p>
-                        <p className="text-xs text-surface-muted">
-                          Administrator
-                        </p>
+                        <p className="text-xs text-emerald-500">@admin</p>
                       </div>
                     </div>
                   </div>
@@ -104,24 +110,48 @@ export default function Navbar() {
                       {
                         label: "View profile",
                         description: "See account details",
+                        icon: User,
                       },
-                      { label: "Settings", description: "Update preferences" },
+                      {
+                        label: "Settings",
+                        icon: Settings,
+                        description: "Update preferences",
+                      },
                       {
                         label: "Sign out",
                         description: "Logout from dashboard",
+                        icon: LogOutIcon,
+                        action: async () => {
+                          try {
+                            const res = await fetch("/api/auth/logout", {
+                              method: "POST",
+                              headers: { "Content-Type": "application/json" },
+                            });
+
+                            if (res.ok) {
+                              window.location.href = "/auth/login";
+                            }
+                          } catch (error) {
+                            console.error("Logout failed", error);
+                          }
+                        },
                       },
-                    ].map((item) => (
+                    ].map((item, index) => (
                       <button
                         key={item.label}
                         type="button"
-                        className="w-full rounded-3xl bg-surface p-3 text-left transition hover:bg-surface-container cursor-pointer"
+                        onClick={item.action}
+                        className="w-full text-left last:border-b-0 transition hover:bg-surface-container cursor-pointer"
                       >
-                        <p className="text-sm font-medium text-on-surface">
-                          {item.label}
-                        </p>
-                        <p className="text-xs text-surface-muted">
-                          {item.description}
-                        </p>
+                        <div
+                          className={`flex items-center ${index < 2 ? "border-b border-white/5" : ""} gap-3 py-2 hover:text-amber-400 transition-all font-medium hover:ps-2`}
+                        >
+                          <Icon
+                            icon={item.icon}
+                            className={"h-5 w-5 text-amber-400"}
+                          />
+                          <p className="text-sm">{item.label}</p>
+                        </div>
                       </button>
                     ))}
                   </div>
