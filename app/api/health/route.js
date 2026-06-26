@@ -1,11 +1,11 @@
-import { connectToDatabase } from '@/lib/mongodb';
+import dbConnect from '@/lib/mongodb';
 
 export async function GET() {
   try {
-    const { client } = await connectToDatabase();
+    const mongoose = await dbConnect();
     
     // Test the connection by pinging the database
-    await client.db('admin').command({ ping: 1 });
+    await mongoose.connection.db.admin().ping();
     
     return Response.json(
       {
