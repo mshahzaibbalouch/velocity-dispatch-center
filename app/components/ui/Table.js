@@ -68,7 +68,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
 
         <tbody>
           {currentBookings.length === 0 && (
-            <tr>
+            <tr key="no-bookings">
               <td
                 colSpan={6}
                 className="border-t text-center text-md py-3 border-white/5 hover:cursor-pointer hover:bg-white/[0.02] transition"
@@ -80,36 +80,57 @@ const Table = ({ recentBookings = [], pagination = false }) => {
           {currentBookings.length > 0 &&
             currentBookings.map((booking) => (
               <tr
-                key={booking.id}
+                key={booking._id}
                 className="border-t border-white/5 hover:cursor-pointer hover:bg-white/[0.02] transition"
               >
                 <td className="px-4 py-2">
                   <div className="flex items-center gap-4">
                     <div className="h-11 w-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center font-bold text-black">
-                      {booking?.avatar}
+                      {booking?.avatar ||
+                        booking?.passengerId?.name
+                          ?.split(" ")[0]
+                          ?.split("")[0] +
+                          booking?.passengerId?.name
+                            ?.split(" ")[1]
+                            ?.split("")[0]}
                     </div>
 
                     <div>
                       <p className="text-white font-medium">
-                        {booking.passenger}
+                        {booking.passengerId?.name ||
+                          booking.passengerName ||
+                          "Unknown Passenger"}
                       </p>
 
                       <p className="text-xs text-gray-500">
-                        {booking.bookedAt}
+                        {booking.createdAt
+                          ? new Date(booking.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              },
+                            )
+                          : "Unknown Date"}
                       </p>
                     </div>
                   </div>
                 </td>
 
-                <td className="text-gray-300">{booking.pickup}</td>
+                <td className="text-gray-300">{booking.pickupLocation}</td>
 
-                <td className="text-gray-300">{booking.dropoff}</td>
+                <td className="text-gray-300">{booking.dropLocation}</td>
 
                 <td>
                   <div>
                     <p className="text-white">{booking.driver}</p>
-
-                    <p className="text-xs text-gray-500">{booking.vehicle}</p>
+                    <p className="text-white font-medium"></p>
+                    <p className="text-xs text-gray-500">
+                      {booking.driverId?.name ||
+                        booking.driverName ||
+                        "Unknown Driver"}
+                    </p>
                   </div>
                 </td>
 
@@ -123,7 +144,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
 
                 <td className="text-right pr-7">
                   <p className="font-bold text-white">
-                    ${booking.fare.toFixed(2)}
+                    ${booking.price ? booking.price.toFixed(2) : "0.00"}
                   </p>
 
                   <p className="text-xs text-gray-500">{booking.payment}</p>

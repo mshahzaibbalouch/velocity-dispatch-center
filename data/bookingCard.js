@@ -8,7 +8,7 @@ export const bookingStats = [
     color: "amber",
   },
   {
-    title: "Completed Today",
+    title: "Completed",
     value: "4,821",
     icon: CircleCheck,
     color: "emerald",
