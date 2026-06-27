@@ -18,22 +18,22 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-20 mb-6 flex flex-col gap-4 border border-white/5 bg-surface-container-high px-6 py-4 shadow-[0_20px_120px_rgba(0,0,0,0.12)] backdrop-blur-xl">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <header className="sticky top-0 z-[9999] mb-6 flex flex-col gap-4 border border-white/5 bg-surface-container-high px-6 py-4 shadow-[0_20px_120px_rgba(0,0,0,0.12)] backdrop-blur-xl">
+        <div className="w-full flex flex-row ps-10 lg:ps-0 gap-4 items-center justify-between">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-surface-muted" />
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-white" />
             <input
               type="search"
               placeholder="Search dispatches, vehicles, drivers..."
-              className="rounded-4xl border border-white/10 bg-surface ps-10 px-3 py-3 text-sm text-on-surface outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/15 w-[50%]"
+              className="rounded-4xl  border border-white/10 bg-surface ps-10 px-3 py-3 text-sm text-on-surface outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/15 w-[50%]"
             />
           </div>
-          <div className="flex items-center justify-end gap-3">
+          <div className="flex items-center justify-end gap-1">
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setNotificationOpen(!isNotificationOpen)}
-                className="inline-flex h-12 w-12 items-center justify-center rounded-3xl border border-white/10 text-on-surface transition"
+                className="inline-flex h-12 p-0 w-12 items-center justify-center rounded-3xl border border-white/10 text-on-surface transition"
                 aria-label="Toggle notifications"
               >
                 <Bell className="h-5 w-5" />
@@ -66,7 +66,7 @@ export default function Navbar() {
 
             <Link
               href="/support"
-              className="inline-flex items-center gap-2 rounded-3xl text-on-surface transition hover:bg-surface-container-high p-3"
+              className="inline-flex items-center gap-2 rounded-3xl text-on-surface transition hover:bg-surface-container-high"
             >
               <CircleQuestionMark className="h-5 w-5 text-secondary" />
             </Link>
@@ -75,9 +75,9 @@ export default function Navbar() {
               <button
                 type="button"
                 onClick={() => setProfileOpen(!isProfileOpen)}
-                className="inline-flex items-center gap-3 rounded-3xl border-l-2 border-white px-4 py-3 text-sm text-on-surface transition"
+                className="inline-flex items-center gap-2 rounded-3xl border-l-2 border-white px-4 py-3 text-sm text-on-surface transition"
               >
-                <div className="text-left">
+                <div className="text-left hidden lg:block ">
                   <p className="font-sm">Shahzaib</p>
                 </div>
                 <img

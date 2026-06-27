@@ -1,5 +1,6 @@
 import React from "react";
-import Icon from "./Icon";
+import Icon from "./ui/Icon";
+import { TrendingUp } from "lucide-react";
 
 const Card = ({ title, value, icon, badge }) => {
   return (
@@ -21,21 +22,27 @@ const Card = ({ title, value, icon, badge }) => {
       </div>
 
       {/* Value */}
-      <p className="text-4xl font-bold text-on-surface">
-        {value}
-      </p>
+      <p className="text-4xl font-bold text-on-surface">{value}</p>
 
       {/* Badge */}
       {badge && (
         <div className="flex items-center gap-1.5 mt-2">
           {badge.type === "trend" && (
-            <span className="text-sm font-medium text-emerald-400">
-              ↗ {badge.text}
+            <span className="text-sm font-medium flex gap-2 text-emerald-400">
+              <TrendingUp /> {badge.text}
             </span>
           )}
           {badge.type === "status" && (
             <>
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              <span className="text-sm font-medium text-on-surface">
+                {badge.text}
+              </span>
+            </>
+          )}
+          {badge.type === "warning" && (
+            <>
+              <span className="font-bold text-amber-400">!</span>
               <span className="text-sm font-medium text-on-surface">
                 {badge.text}
               </span>

@@ -1,5 +1,5 @@
-import Navbar from '../../components/Navbar';
-import Sidebar from '../../components/Sidebar';
+import Navbar from '../../components/ui/Navbar';
+import Sidebar from '../../components/ui/Sidebar';
 
 export default function DispatcherDashboardPage() {
   return (

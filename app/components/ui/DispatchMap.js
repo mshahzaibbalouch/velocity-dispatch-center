@@ -99,7 +99,7 @@ export default function DispatchMap() {
   }, []);
 
   return (
-    <div className="relative w-full h-[300px] rounded-xl overflow-hidden">
+    <div className="relative mb-4 w-full h-[300px] rounded-xl overflow-hidden">
       {/* Top badges */}
       <div className="absolute top-3 left-3 z-[999] flex gap-2">
         <span className="flex items-center gap-1.5 bg-black/60 border border-white/10 text-xs font-semibold px-3 py-1.5 rounded-full text-white backdrop-blur-sm">

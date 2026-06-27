@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, User, Building } from "lucide-react";
 import Link from "next/link";
-import Icon from "@/app/components/Icon";
+import Icon from "@/app/components/ui/Icon";
 
 export default function LoginPage() {
   const router = useRouter();
