@@ -48,7 +48,12 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8">
         <div className="glass-panel mx-auto w-full p-8">
           <div className="mb-6 text-center">
-            <h1 className="text-2xl font-bold text-amber-400">
+            <h1 className="text-2xl font-bold text-amber-400 flex items-center justify-center gap-2 ">
+              <img
+                src="/assets/images/favicon.svg"
+                alt="Velocity"
+                className="h-10 w-auto"
+              />
               Velocity Dispatch
             </h1>
             <p className="mt-2 text-sm text-surface-muted">
@@ -62,7 +67,7 @@ export default function LoginPage() {
                 {error}
               </div>
             )}
-           
+
             <label className="block">
               <span className="text-xs text-surface-muted">Work Email</span>
               <div className="relative flex-1">
@@ -122,12 +127,12 @@ export default function LoginPage() {
             </button>
           </form>
           <div className="mt-6 text-center text-sm text-surface-muted">
-            Already have an account?{" "}
+            New to Velocity Dispatch?{" "}
             <Link
               href="/auth/signup"
               className="text-amber-400 hover:underline font-semibold"
             >
-              Sign In
+              Sign Up
             </Link>
           </div>
         </div>

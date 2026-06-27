@@ -15,6 +15,7 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [agree, setAgree] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
   function handleChange(e) {
@@ -29,7 +30,12 @@ export default function SignupPage() {
       setError("Access key must be at least 8 characters");
       return;
     }
-    
+
+    if (!agree) {
+      setError("You must agree to the Terms and Conditions");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -41,6 +47,7 @@ export default function SignupPage() {
           companyName: form.companyName,
           email: form.email,
           password: form.password,
+          agree: agree,
         }),
       });
 
@@ -64,7 +71,12 @@ export default function SignupPage() {
       <div className="w-full max-w-md p-4">
         <div className="glass-panel mx-auto w-full p-8">
           <div className="mb-6 text-center">
-            <h1 className="text-2xl font-bold text-amber-400">
+            <h1 className="text-2xl font-bold text-amber-400 flex items-center justify-center gap-2 ">
+              <img
+                src="/assets/images/favicon.svg"
+                alt="Velocity"
+                className="h-10 w-auto"
+              />
               Velocity Dispatch
             </h1>
             <p className="mt-2 text-sm text-surface-muted">
@@ -159,6 +171,19 @@ export default function SignupPage() {
                 </button>
               </div>
             </label>
+
+            <div className="flex items-center justify-between">
+              <label className="inline-flex items-center gap-2 text-sm text-surface-muted">
+                <input
+                  type="checkbox"
+                  checked={agree}
+                  onChange={(e) => setAgree(e.target.checked)}
+                />
+                Aggree with{" "}
+                <span className="text-amber-400">Terms, Condition</span> and{" "}
+                <span className="text-amber-400">Privacy Policy</span>
+              </label>
+            </div>
 
             <button
               type="submit"

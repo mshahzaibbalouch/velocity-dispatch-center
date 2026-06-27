@@ -79,9 +79,7 @@ export default function Sidebar() {
         lg:w-24
         xl:w-72
 
-        ${
-          open ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0
+        ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
       `}
       >
         {/* Header */}
@@ -153,13 +151,11 @@ export default function Sidebar() {
               </h3>
 
               <p className="text-xs text-emerald-400">
-                Senior Dispatcher
+                Chief Executive Officer
               </p>
             </div>
           </div>
         </div>
-
-        
       </aside>
     </>
   );

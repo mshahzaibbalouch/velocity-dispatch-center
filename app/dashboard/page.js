@@ -1,7 +1,8 @@
 import { statCards } from "@/data/cards";
 import DispatchMap from "../components/ui/DispatchMap";
-import RecentBookings from "../components/recentBookings";
 import Card from "../components/Card";
+import Table from "../components/ui/Table";
+import { recentBookings } from "@/data/recentBookings";
 
 export default function DashboardPage() {
   return (
@@ -12,7 +13,7 @@ export default function DashboardPage() {
         ))}
       </section>
       <DispatchMap />
-      <RecentBookings />
+      <Table recentBookings={recentBookings} pagination={false} />
     </section>
   );
 }
