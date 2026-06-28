@@ -2,10 +2,15 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import User from '@/models/User';
+import { authorizeRequest, forbiddenResponse } from '@/app/api/booking/auth';
 
 // GET a single booking by ID
 export async function GET(req, { params }) {
   try {
+    const auth = authorizeRequest(req);
+    if (auth.error) return auth.response;
+    const user = auth.user;
+
     await dbConnect();
 
     const { id } = params;
@@ -18,6 +23,10 @@ export async function GET(req, { params }) {
         { success: false, message: 'Booking not found' },
         { status: 404 }
       );
+    }
+
+    if (user.role === 'driver' && String(booking.driverId?._id || booking.driverId) !== String(user.id)) {
+      return forbiddenResponse('You do not have access to this booking');
     }
 
     return NextResponse.json({
@@ -36,6 +45,9 @@ export async function GET(req, { params }) {
 // PATCH update booking details
 export async function PATCH(req, { params }) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    if (auth.error) return auth.response;
+
     await dbConnect();
 
     const { id } = params;
@@ -87,6 +99,9 @@ export async function PATCH(req, { params }) {
 // DELETE cancel or delete booking
 export async function DELETE(req, { params }) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    if (auth.error) return auth.response;
+
     await dbConnect();
 
     const { id } = params;

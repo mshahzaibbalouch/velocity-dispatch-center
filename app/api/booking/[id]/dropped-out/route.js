@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
+import { authorizeRequest, forbiddenResponse } from '@/app/api/booking/auth';
 
 // POST mark booking as dropped out (no show)
 export async function POST(req, { params }) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher', 'driver']);
+    if (auth.error) return auth.response;
+    const user = auth.user;
+
     await dbConnect();
 
     const { id } = params;
@@ -17,6 +22,10 @@ export async function POST(req, { params }) {
         { success: false, message: 'Booking not found' },
         { status: 404 }
       );
+    }
+
+    if (user.role === 'driver' && String(booking.driverId) !== String(user.id)) {
+      return forbiddenResponse('You do not have access to this booking');
     }
 
     // Can only mark as dropped out if driver arrived

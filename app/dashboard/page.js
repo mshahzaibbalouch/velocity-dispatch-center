@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("/api/booking");
+      const response = await fetch("/api/booking?page=1&limit=10");
       const result = await response.json();
       setData(result.data);
       console.log(result);
@@ -29,11 +29,14 @@ export default function DashboardPage() {
     <section>
       <section className="grid gap-3 lg:grid-cols-4">
         {statCards.map((card) => (
-          <Card key={card.id} {...card} />
+          <div key={card.title}>
+            <Card {...card} />
+          </div>
+          
         ))}
       </section>
       <DispatchMap />
-      <Table recentBookings={recentBookings} pagination={false} />
+      <Table recentBookings={data} pagination={false} />
     </section>
   );
 }

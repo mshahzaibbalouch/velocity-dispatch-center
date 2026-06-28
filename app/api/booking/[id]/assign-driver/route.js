@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import User from '@/models/User';
+import { authorizeRequest } from '@/app/api/booking/auth';
 
 // POST assign a driver to booking
 export async function POST(req, { params }) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    if (auth.error) return auth.response;
+
     await dbConnect();
 
     const { id } = params;

@@ -2,10 +2,15 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
 import User from '@/models/User';
+import { authorizeRequest } from '@/app/api/booking/auth';
 
 // GET all bookings or filter by query parameters
 export async function GET(req) {
   try {
+    const auth = authorizeRequest(req);
+    if (auth.error) return auth.response;
+    const user = auth.user;
+
     await dbConnect();
 
     const { searchParams } = new URL(req.url);
@@ -16,8 +21,12 @@ export async function GET(req) {
     const limit = parseInt(searchParams.get('limit')) || 10;
 
     const filter = {};
-    if (passengerId) filter.passengerId = passengerId;
-    if (driverId) filter.driverId = driverId;
+    if (user.role === 'driver') {
+      filter.driverId = user.id;
+    } else {
+      if (passengerId) filter.passengerId = passengerId;
+      if (driverId) filter.driverId = driverId;
+    }
     if (status) filter.status = status;
 
     const skip = (page - 1) * limit;
@@ -53,6 +62,9 @@ export async function GET(req) {
 // POST create a new booking
 export async function POST(req) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    if (auth.error) return auth.response;
+
     await dbConnect();
 
     const body = await req.json();

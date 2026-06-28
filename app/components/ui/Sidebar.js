@@ -127,7 +127,7 @@ export default function Sidebar() {
                   }`}
                 />
 
-                <span className="hidden xl:block font-medium transition-all group-hover:translate-x-1">
+                <span className="font-medium transition-all group-hover:translate-x-1">
                   {item.label}
                 </span>
               </Link>

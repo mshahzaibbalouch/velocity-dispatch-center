@@ -1,10 +1,14 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
+import { authorizeRequest } from '@/app/api/booking/auth';
 
 // GET all booking statistics
 export async function GET(req) {
   try {
+    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    if (auth.error) return auth.response;
+
     await dbConnect();
 
     const bookings = await Booking.find();

@@ -6,29 +6,41 @@ import {
   Funnel,
   ChevronLeft,
   ChevronRight,
+  RefreshCw,
 } from "lucide-react";
 
-const Table = ({ recentBookings = [], pagination = false }) => {
-  const ITEMS_PER_PAGE = 10;
-
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const totalPages = Math.ceil(recentBookings.length / ITEMS_PER_PAGE);
-
-  const currentBookings = pagination
-    ? recentBookings.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE,
-      )
-    : recentBookings.slice(0, 10);
-
+const Table = ({
+  recentBookings = [],
+  total = 1,
+  pagination = false,
+  isLoading = false,
+  refresh = () => {},
+  currentPage = 1,
+  totalPages = 1,
+  ITEMS_PER_PAGE = 10,
+  onPageChange = () => {},
+}) => {
   const statusStyles = {
-    active: "bg-amber-500/15 text-amber-400 border border-amber-500/30",
-    pickup: "bg-blue-500/15 text-blue-400 border border-blue-500/30",
-    dropoff: "bg-violet-500/15 text-violet-400 border border-violet-500/30",
-    completed:
-      "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30",
+    pending: "bg-yellow-500/15 text-yellow-400 border border-yellow-500/30",
+
+    confirmed: "bg-blue-500/15 text-blue-400 border border-blue-500/30",
+
+    driver_assigned:
+      "bg-purple-500/15 text-purple-400 border border-purple-500/30",
+
+    driver_arrived: "bg-cyan-500/15 text-cyan-400 border border-cyan-500/30",
+
+    picked_up: "bg-indigo-500/15 text-indigo-400 border border-indigo-500/30",
+
+    in_transit: "bg-orange-500/15 text-orange-400 border border-orange-500/30",
+
+    completed: "bg-green-500/15 text-green-400 border border-green-500/30",
+
     cancelled: "bg-red-500/15 text-red-400 border border-red-500/30",
+
+    no_show: "bg-gray-500/15 text-gray-400 border border-gray-500/30",
+
+    dropped_out: "bg-pink-500/15 text-pink-400 border border-pink-500/30",
   };
 
   return (
@@ -40,7 +52,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
 
         <div className="flex items-center gap-4">
           <button className="text-gray-400 hover:text-amber-400 transition">
-            <Funnel size={18} />
+            <RefreshCw size={18} onClick={refresh} />
           </button>
 
           <button className="text-gray-400 hover:text-white transition">
@@ -67,103 +79,135 @@ const Table = ({ recentBookings = [], pagination = false }) => {
         </thead>
 
         <tbody>
-          {currentBookings.length === 0 && (
-            <tr key="no-bookings">
+          {isLoading ? (
+            <tr>
               <td
                 colSpan={6}
-                className="border-t text-center text-md py-3 border-white/5 hover:cursor-pointer hover:bg-white/[0.02] transition"
+                className="border-t border-white/5 py-6 text-center text-gray-400"
+              >
+                Loading...
+              </td>
+            </tr>
+          ) : recentBookings.length === 0 ? (
+            <tr>
+              <td
+                colSpan={6}
+                className="border-t border-white/5 py-6 text-center text-gray-400"
               >
                 No recent bookings
               </td>
             </tr>
-          )}
-          {currentBookings.length > 0 &&
-            currentBookings.map((booking) => (
-              <tr
-                key={booking._id}
-                className="border-t border-white/5 hover:cursor-pointer hover:bg-white/[0.02] transition"
-              >
-                <td className="px-4 py-2">
-                  <div className="flex items-center gap-4">
-                    <div className="h-11 w-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center font-bold text-black">
-                      {booking?.avatar ||
-                        booking?.passengerId?.name
-                          ?.split(" ")[0]
-                          ?.split("")[0] +
-                          booking?.passengerId?.name
-                            ?.split(" ")[1]
-                            ?.split("")[0]}
-                    </div>
+          ) : (
+            recentBookings.map((booking) => {
+              const passengerName =
+                booking.passengerId?.name ||
+                booking.passengerName ||
+                "Unknown Passenger";
 
+              const driverName =
+                booking.driverId?.name ||
+                booking.driverName ||
+                "Unknown Driver";
+
+              const passengerInitials = passengerName
+                .split(" ")
+                .map((word) => word[0])
+                .slice(0, 2)
+                .join("")
+                .toUpperCase();
+
+              return (
+                <tr
+                  key={booking._id}
+                  className="border-t border-white/5 hover:bg-white/[0.02] transition cursor-pointer"
+                >
+                  {/* Passenger */}
+                  <td className="px-4 py-3">
+                    <div className="flex items-center gap-4">
+                      <div className="h-11 w-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center font-bold text-black">
+                        {booking.avatar || passengerInitials}
+                      </div>
+
+                      <div>
+                        <p className="font-medium text-white">
+                          {passengerName}
+                        </p>
+
+                        <p className="text-xs text-gray-500">
+                          {booking.createdAt
+                            ? new Date(booking.createdAt).toLocaleDateString(
+                                "en-US",
+                                {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                },
+                              )
+                            : "Unknown Date"}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+
+                  {/* Pickup */}
+                  <td className="text-gray-300">
+                    {booking.pickupLocation || "-"}
+                  </td>
+
+                  {/* Drop */}
+                  <td className="text-gray-300">
+                    {booking.dropLocation || "-"}
+                  </td>
+
+                  {/* Driver */}
+                  <td>
                     <div>
-                      <p className="text-white font-medium">
-                        {booking.passengerId?.name ||
-                          booking.passengerName ||
-                          "Unknown Passenger"}
-                      </p>
-
-                      <p className="text-xs text-gray-500">
-                        {booking.createdAt
-                          ? new Date(booking.createdAt).toLocaleDateString(
-                              "en-US",
-                              {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              },
-                            )
-                          : "Unknown Date"}
-                      </p>
+                      <p className="text-white">{driverName}</p>
                     </div>
-                  </div>
-                </td>
+                  </td>
 
-                <td className="text-gray-300">{booking.pickupLocation}</td>
+                  {/* Status */}
+                  <td>
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${
+                        statusStyles[booking.status] ||
+                        "bg-gray-500/20 text-gray-300"
+                      }`}
+                    >
+                      {booking.status || "Unknown"}
+                    </span>
+                  </td>
 
-                <td className="text-gray-300">{booking.dropLocation}</td>
-
-                <td>
-                  <div>
-                    <p className="text-white">{booking.driver}</p>
-                    <p className="text-white font-medium"></p>
-                    <p className="text-xs text-white">
-                      {booking.driverId?.name.split(' ')[0] ||
-                        booking.driverName?.split(' ')[0] ||
-                        "Unknown Driver"}
+                  {/* Price */}
+                  <td className="pr-7 text-right">
+                    <p className="font-bold text-white">
+                      $
+                      {typeof booking.price === "number"
+                        ? booking.price.toFixed(2)
+                        : "0.00"}
                     </p>
-                  </div>
-                </td>
 
-                <td>
-                  <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold capitalize ${statusStyles[booking.status]}`}
-                  >
-                    {booking.status}
-                  </span>
-                </td>
-
-                <td className="text-right pr-7">
-                  <p className="font-bold text-white">
-                    ${booking.price ? booking.price.toFixed(2) : "0.00"}
-                  </p>
-
-                  <p className="text-xs text-gray-500">{booking.payment}</p>
-                </td>
-              </tr>
-            ))}
+                    <p className="text-xs text-gray-500">
+                      {booking.payment || "N/A"}
+                    </p>
+                  </td>
+                </tr>
+              );
+            })
+          )}
         </tbody>
       </table>
-      {pagination && recentBookings.length > ITEMS_PER_PAGE && (
+      {pagination && (
         <div className="flex items-center justify-between px-5 py-4 border-t border-white/5">
           <p className="text-sm text-gray-400">
             Showing {(currentPage - 1) * ITEMS_PER_PAGE + 1} to{" "}
             {Math.min(currentPage * ITEMS_PER_PAGE, recentBookings.length)} of{" "}
-            {recentBookings.length} results
+            {total} results
           </p>
 
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+              onClick={() => onPageChange((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
               className="h-9 w-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 disabled:opacity-40 hover:bg-white/5"
             >
@@ -173,7 +217,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
             {Array.from({ length: totalPages }, (_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentPage(index + 1)}
+                onClick={() => onPageChange(index + 1)}
                 className={`h-9 w-9 rounded-lg text-sm font-medium transition ${
                   currentPage === index + 1
                     ? "bg-amber-400 text-black"
@@ -185,7 +229,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
             ))}
 
             <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+              onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
               className="h-9 w-9 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 disabled:opacity-40 hover:bg-white/5"
             >

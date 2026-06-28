@@ -33,15 +33,17 @@ export async function POST(req) {
     const maxAge = remember ? 60 * 60 * 24 * 30 : 60 * 60 * 8;
     const secure = process.env.NODE_ENV === 'production';
     const cookie = `__ds_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}; ${secure ? 'Secure;' : ''}`;
+    const publicCookie = `__ds_sid_public=${token}; Path=/; SameSite=Lax; Max-Age=${maxAge}; ${secure ? 'Secure;' : ''}`;
 
     const redirect = getDashboardRoute(token) || '/dashboard';
+    const headers = new Headers();
+    headers.append('Set-Cookie', cookie);
+    headers.append('Set-Cookie', publicCookie);
+    headers.append('Content-Type', 'application/json');
 
     return new Response(JSON.stringify({ ok: true, redirect }), {
       status: 200,
-      headers: {
-        'Set-Cookie': cookie,
-        'Content-Type': 'application/json',
-      },
+      headers,
     });
   } catch (err) {
     console.error('LOGIN ERROR:', err);

@@ -7,9 +7,8 @@ import User from "@/models/User";
 
 export async function POST(req) {
   try {
-    console.log("URI:", process.env.MONGODB_URI);
     const { fullName, email, password, companyName } = await req.json();
-    if (!fullName || !email || !password || !companyName) {
+    if (!fullName || !email || !password) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -22,7 +21,6 @@ export async function POST(req) {
         { status: 400 },
       );
     }
-    debugger;
     await dbConnect();
 
     const existing = await User.findOne({ email: email.toLowerCase() });
@@ -51,14 +49,16 @@ export async function POST(req) {
 
     const secure = process.env.NODE_ENV === "production";
     const cookie = `__ds_sid=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${60 * 60 * 8}; ${secure ? "Secure;" : ""}`;
-    const redirect = getDashboardRoute(token) || "/dashboard";
+    const publicCookie = `__ds_sid_public=${token}; Path=/; SameSite=Lax; Max-Age=${60 * 60 * 8}; ${secure ? "Secure;" : ""}`;
+    const redirect = "/" + user.role + "/dashboard";
+    const headers = new Headers();
+    headers.append('Set-Cookie', cookie);
+    headers.append('Set-Cookie', publicCookie);
+    headers.append('Content-Type', 'application/json');
 
     return new Response(JSON.stringify({ ok: true, redirect }), {
       status: 201,
-      headers: {
-        "Set-Cookie": cookie,
-        "Content-Type": "application/json",
-      },
+      headers,
     });
   } catch (err) {
     console.error("SIGNUP ERROR:", err.message, err.stack);

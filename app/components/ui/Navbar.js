@@ -2,14 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import {
-  Bell,
-  Search,
-  CircleQuestionMark,
-  User,
-  Settings,
-  LogOutIcon,
-} from "lucide-react";
+import { Bell, Search, CircleQuestionMark } from "lucide-react";
 import Icon from "./Icon";
 
 export default function Navbar() {
@@ -110,17 +103,17 @@ export default function Navbar() {
                       {
                         label: "View profile",
                         description: "See account details",
-                        icon: User,
+                        icon: "User",
                       },
                       {
                         label: "Settings",
-                        icon: Settings,
+                        icon: "Settings",
                         description: "Update preferences",
                       },
                       {
                         label: "Sign out",
                         description: "Logout from dashboard",
-                        icon: LogOutIcon,
+                        icon: "LogOutIcon",
                         action: async () => {
                           try {
                             const res = await fetch("/api/auth/logout", {
