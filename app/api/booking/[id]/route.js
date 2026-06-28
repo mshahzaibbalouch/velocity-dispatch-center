@@ -1,8 +1,9 @@
-import { NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Booking from '@/models/Booking';
-import User from '@/models/User';
-import { authorizeRequest, forbiddenResponse } from '@/app/api/booking/auth';
+import { NextResponse } from "next/server";
+import dbConnect from "@/lib/mongodb";
+import Booking from "@/models/Booking";
+import User from "@/models/User";
+import { authorizeRequest } from "@/app/api/booking/auth";
+import { forbiddenResponse } from "@/lib/auth";
 
 // GET a single booking by ID
 export async function GET(req, { params }) {
@@ -15,18 +16,21 @@ export async function GET(req, { params }) {
 
     const { id } = params;
     const booking = await Booking.findById(id)
-      .populate('passengerId', 'name email')
-      .populate('driverId', 'name email');
+      .populate("passengerId", "name email")
+      .populate("driverId", "name email");
 
     if (!booking) {
       return NextResponse.json(
-        { success: false, message: 'Booking not found' },
-        { status: 404 }
+        { success: false, message: "Booking not found" },
+        { status: 404 },
       );
     }
 
-    if (user.role === 'driver' && String(booking.driverId?._id || booking.driverId) !== String(user.id)) {
-      return forbiddenResponse('You do not have access to this booking');
+    if (
+      user.role === "driver" &&
+      String(booking.driverId?._id || booking.driverId) !== String(user.id)
+    ) {
+      return forbiddenResponse("You do not have access to this booking");
     }
 
     return NextResponse.json({
@@ -34,10 +38,10 @@ export async function GET(req, { params }) {
       data: booking,
     });
   } catch (error) {
-    console.error('Error fetching booking:', error);
+    console.error("Error fetching booking:", error);
     return NextResponse.json(
       { success: false, message: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -45,7 +49,7 @@ export async function GET(req, { params }) {
 // PATCH update booking details
 export async function PATCH(req, { params }) {
   try {
-    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    const auth = authorizeRequest(req, ["admin", "dispatcher"]);
     if (auth.error) return auth.response;
 
     await dbConnect();
@@ -56,20 +60,20 @@ export async function PATCH(req, { params }) {
     const booking = await Booking.findById(id);
     if (!booking) {
       return NextResponse.json(
-        { success: false, message: 'Booking not found' },
-        { status: 404 }
+        { success: false, message: "Booking not found" },
+        { status: 404 },
       );
     }
 
     // Update allowed fields
     const allowedFields = [
-      'pickupLocation',
-      'dropLocation',
-      'price',
-      'distance',
-      'estimatedDuration',
-      'paymentMethod',
-      'notes',
+      "pickupLocation",
+      "dropLocation",
+      "price",
+      "distance",
+      "estimatedDuration",
+      "paymentMethod",
+      "notes",
     ];
 
     allowedFields.forEach((field) => {
@@ -80,18 +84,20 @@ export async function PATCH(req, { params }) {
 
     booking.updatedAt = new Date();
     await booking.save();
-    const updatedBooking = await booking.populate('passengerId', 'name email').populate('driverId', 'name email');
+    const updatedBooking = await booking
+      .populate("passengerId", "name email")
+      .populate("driverId", "name email");
 
     return NextResponse.json({
       success: true,
-      message: 'Booking updated successfully',
+      message: "Booking updated successfully",
       data: updatedBooking,
     });
   } catch (error) {
-    console.error('Error updating booking:', error);
+    console.error("Error updating booking:", error);
     return NextResponse.json(
       { success: false, message: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -99,7 +105,7 @@ export async function PATCH(req, { params }) {
 // DELETE cancel or delete booking
 export async function DELETE(req, { params }) {
   try {
-    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    const auth = authorizeRequest(req, ["admin", "dispatcher"]);
     if (auth.error) return auth.response;
 
     await dbConnect();
@@ -109,8 +115,8 @@ export async function DELETE(req, { params }) {
 
     if (!booking) {
       return NextResponse.json(
-        { success: false, message: 'Booking not found' },
-        { status: 404 }
+        { success: false, message: "Booking not found" },
+        { status: 404 },
       );
     }
 
@@ -118,13 +124,13 @@ export async function DELETE(req, { params }) {
 
     return NextResponse.json({
       success: true,
-      message: 'Booking deleted successfully',
+      message: "Booking deleted successfully",
     });
   } catch (error) {
-    console.error('Error deleting booking:', error);
+    console.error("Error deleting booking:", error);
     return NextResponse.json(
       { success: false, message: error.message },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

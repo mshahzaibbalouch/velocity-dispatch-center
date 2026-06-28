@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Booking from '@/models/Booking';
-import { authorizeRequest, forbiddenResponse } from '@/app/api/booking/auth';
+import { forbiddenResponse } from '@/lib/auth';
+import { authorizeRequest } from '@/app/api/booking/auth';
 
 // POST mark booking as dropped out (no show)
 export async function POST(req, { params }) {
