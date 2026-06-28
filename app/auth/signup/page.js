@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, Building, User } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -72,9 +73,11 @@ export default function SignupPage() {
         <div className="glass-panel mx-auto w-full p-8">
           <div className="mb-6 text-center">
             <h1 className="text-2xl font-bold text-amber-400 flex items-center justify-center gap-2 ">
-              <img
+              <Image
                 src="/assets/images/favicon.svg"
                 alt="Velocity"
+                width={40}
+                height={40}
                 className="h-10 w-auto"
               />
               Velocity Dispatch

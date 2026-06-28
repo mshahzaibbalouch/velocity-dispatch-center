@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -13,144 +14,114 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+const navItems = [
+  { label: "Dashboard",     href: "/dashboard",               icon: LayoutDashboard },
+  { label: "Booking",       href: "/dashboard/booking",       icon: CalendarRange   },
+  { label: "Drivers",       href: "/dashboard/driver",        icon: MapPinHouse     },
+  { label: "Live Tracking", href: "/dashboard/tracking",      icon: Compass         },
+  { label: "Settings",      href: "/dashboard/settings",      icon: Settings        },
+];
+
 export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const navItems = [
-    {
-      label: "Dashboard",
-      href: "/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      label: "Booking",
-      href: "/dashboard/booking",
-      icon: CalendarRange,
-    },
-    {
-      label: "Drivers",
-      href: "/dashboard/driver",
-      icon: MapPinHouse,
-    },
-    {
-      label: "Live Tracking",
-      href: "/dashboard/tracking",
-      icon: Compass,
-    },
-    {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: Settings,
-    },
-  ];
-
   return (
     <>
-      {/* Mobile Menu Button */}
-
+      {/* Hamburger — visible only below lg */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed left-4 top-5 z-[10000] flex h-11 w-11 items-center justify-center rounded-xl border border-white/10 bg-surface-container lg:hidden"
+        aria-label="Open menu"
+        className="fixed left-4 top-4 z-999 flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-surface-container lg:hidden"
       >
         <Menu className="h-5 w-5 text-white" />
       </button>
 
-      {/* Overlay */}
-
+      {/* Overlay — mobile/md only */}
       {open && (
         <div
-          className="fixed inset-0 z-[99999] bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-999 bg-black/60 backdrop-blur-sm lg:hidden"
           onClick={() => setOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
-
+      {/* Sidebar panel */}
       <aside
         className={`
-        fixed lg:sticky top-0 left-0 z-[99999]
-        flex h-screen flex-col
-        bg-surface-container
-        border-r border-white/5
-        transition-all duration-300
-
-        w-72
-        lg:w-24
-        xl:w-72
-
-        ${open ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0
-      `}
+          fixed lg:sticky top-0 left-0
+          z-999 flex h-screen w-70 flex-col
+          bg-surface-container border-r border-white/5
+          transition-transform duration-300 ease-in-out
+          ${open ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
       >
-        {/* Header */}
-
-        <div className="flex items-center justify-between p-3 xl:justify-start lg:justify-center">
-          <img
+        {/* Logo + close */}
+        <div className="flex h-18 items-center justify-between px-5 border-b border-white/5">
+          <Image
             src="/assets/images/logo.svg"
             alt="Velocity"
-            className="h-15 w-auto"
+            width={120}
+            height={40}
+            className="h-10 w-auto"
+            priority
           />
-
           <button
             onClick={() => setOpen(false)}
-            className="rounded-lg p-2 hover:bg-white/5 lg:hidden"
+            aria-label="Close menu"
+            className="flex h-8 w-8 items-center justify-center rounded-lg hover:bg-white/5 lg:hidden"
           >
-            <X className="h-5 w-5 text-white" />
+            <X className="h-4 w-4 text-white" />
           </button>
         </div>
 
-        {/* Navigation */}
-
-        <nav className="mt-5 flex-1 space-y-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-
-            const active = pathname === item.href;
-
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto py-4 space-y-0.5">
+          {navItems.map(({ label, href, icon: Icon }) => {
+            const active = pathname === href;
             return (
               <Link
-                key={item.label}
-                href={item.href}
+                key={label}
+                href={href}
                 onClick={() => setOpen(false)}
-                className={`group flex items-center gap-4 px-4 py-3 transition-all duration-300
-
-                ${
-                  active
-                    ? "bg-gray-500/20 text-amber-400 border-r-4 border-amber-400"
-                    : "text-surface-muted hover:bg-surface-container-high hover:text-amber-400"
-                }
-              `}
+                className={`
+                  group relative flex items-center gap-3.5 px-5 py-3
+                  text-sm font-medium transition-all duration-200
+                  ${
+                    active
+                      ? "bg-amber-400/10 text-amber-400 before:absolute before:left-0 before:top-0 before:h-full before:w-0.8 before:rounded-r before:bg-amber-400"
+                      : "text-surface-muted hover:bg-white/5 hover:text-white"
+                  }
+                `}
               >
                 <Icon
-                  className={`h-5 w-5 shrink-0 ${
-                    active ? "text-amber-400" : ""
+                  className={`h-4.5 w-4.5 shrink-0 transition-colors ${
+                    active ? "text-amber-400" : "text-white/40 group-hover:text-white"
                   }`}
                 />
 
                 <span className="font-medium transition-all group-hover:translate-x-1">
-                  {item.label}
+                  {label}
                 </span>
               </Link>
             );
           })}
         </nav>
 
-        {/* Dispatcher */}
-
-        <div className="hidden xl:block border-t">
-          <div className="flex items-center gap-3 rounded-xl p-3">
-            <img
+        {/* User profile */}
+        <div className="border-t border-white/5 p-4">
+          <div className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-3">
+            <Image
               src="/assets/images/team/admin.png"
-              className="h-12 w-12 rounded-full object-cover"
-              alt=""
+              alt="Admin"
+              width={36}
+              height={36}
+              className="h-9 w-9 rounded-full object-cover ring-2 ring-amber-400/30"
             />
-
-            <div>
-              <h3 className="text-sm font-semibold text-white">
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-white">
                 Shahzaib Balouch
-              </h3>
-
-              <p className="text-xs text-emerald-400">
+              </p>
+              <p className="truncate text-xs text-emerald-400">
                 Chief Executive Officer
               </p>
             </div>

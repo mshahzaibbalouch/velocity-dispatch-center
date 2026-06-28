@@ -120,7 +120,8 @@ select {
   color: var(--on-surface);
 }
 
-button {
+button,
+a {
   border: none;
   cursor: pointer;
   font: inherit;

@@ -14,10 +14,9 @@ export default function RootLayout({ children }) {
     <div className="min-h-screen max-w-full bg-surface text-on-surface">
       <div className="grid gap-0 lg:grid-cols-[280px_1fr]">
         <Sidebar />
-        <main className="space-y-3">
+        <main className="min-w-0">
           <Navbar />
-          <div className="px-6 py-2">
-            
+          <div className="px-4 sm:px-6 py-4">
             <section>{children}</section>
             <Footer />
           </div>

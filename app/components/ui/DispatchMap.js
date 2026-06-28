@@ -99,9 +99,9 @@ export default function DispatchMap() {
   }, []);
 
   return (
-    <div className="relative mb-4 w-full h-[300px] rounded-xl overflow-hidden">
+    <div className="relative mb-4 z-10 w-full h-[280px] sm:h-[350px] lg:h-[300px] rounded-xl overflow-hidden">
       {/* Top badges */}
-      <div className="absolute top-3 left-3 z-[999] flex gap-2">
+      <div className="absolute top-3 left-3 z-10 flex gap-2">
         <span className="flex items-center gap-1.5 bg-black/60 border border-white/10 text-xs font-semibold px-3 py-1.5 rounded-full text-white backdrop-blur-sm">
           <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
           LIVE DISPATCH ACTIVE
@@ -112,7 +112,7 @@ export default function DispatchMap() {
       </div>
 
       {/* Legend */}
-      <div className="absolute top-3 right-3 z-[999] flex flex-col gap-1.5 bg-black/60 border border-white/10 px-3 py-2 rounded-lg backdrop-blur-sm">
+      <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 bg-black/60 border border-white/10 px-3 py-2 rounded-lg backdrop-blur-sm">
         <div className="flex items-center gap-2 text-xs text-white">
           <span className="h-2.5 w-2.5 rounded-full bg-amber-400" />
           Online ({fleetStats.online})
@@ -188,9 +188,9 @@ export default function DispatchMap() {
       </MapContainer>
 
       {/* Bottom stats bar */}
-      <div className="absolute bottom-0 left-0 right-0 z-[999] flex items-center justify-between px-5 py-3 bg-black/70 backdrop-blur-sm border-t border-white/10">
+      <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-black/70 backdrop-blur-sm border-t border-white/10">
         <div>
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest">
+          <p className="text-xs text-gray-400 uppercase tracking-widest">
             Avg Pickup Time
           </p>
           <p className="text-xl font-bold text-white">
@@ -198,8 +198,8 @@ export default function DispatchMap() {
           </p>
         </div>
 
-        <div className="flex flex-col gap-1 min-w-[160px]">
-          <p className="text-[10px] text-gray-400 uppercase tracking-widest">
+        <div className="flex flex-col gap-1 min-w-30 sm:min-w-40">
+          <p className="text-xs text-gray-400 uppercase tracking-widest">
             Fleet Capacity
           </p>
           <div className="flex items-center gap-2">
@@ -215,7 +215,7 @@ export default function DispatchMap() {
           </div>
         </div>
 
-        <button className="bg-amber-500 hover:bg-amber-400 transition text-black text-xs font-medium px-4 py-2 rounded-md tracking-widest uppercase">
+        <button className="bg-amber-500 hover:bg-amber-400 transition text-black text-xs font-medium px-3 py-2 sm:px-4 rounded-md tracking-widest uppercase whitespace-nowrap">
           Deploy Rapid Response
         </button>
       </div>
