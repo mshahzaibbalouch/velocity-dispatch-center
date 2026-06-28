@@ -128,7 +128,7 @@ const Table = ({ recentBookings = [], pagination = false }) => {
                     <p className="text-white font-medium"></p>
                     <p className="text-xs text-white">
                       {booking.driverId?.name.split(' ')[0] ||
-                        booking.driverName.split(' ')[0] ||
+                        booking.driverName?.split(' ')[0] ||
                         "Unknown Driver"}
                     </p>
                   </div>
