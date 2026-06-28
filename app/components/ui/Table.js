@@ -44,7 +44,7 @@ const Table = ({
   };
 
   return (
-    <div className="rounded-2xl mb-4 bg-[#1B1F26] border border-white/5 overflow-hidden">
+    <div className="rounded-2xl mb-4 bg-surface-container border border-white/5 overflow-hidden">
       {/* Header */}
 
       <div className="flex items-center justify-between px-4 py-2 border-b border-white/5">
@@ -61,9 +61,10 @@ const Table = ({
         </div>
       </div>
 
-      <table className="w-full">
+      <div className="overflow-x-auto">
+      <table className="w-full min-w-160">
         <thead>
-          <tr className="text-[11px] uppercase tracking-widest text-gray-500">
+          <tr className="text-xs uppercase tracking-widest text-gray-500">
             <th className="text-left px-4 py-2">Passenger</th>
 
             <th className="text-left">Pickup</th>
@@ -119,12 +120,12 @@ const Table = ({
               return (
                 <tr
                   key={booking._id}
-                  className="border-t border-white/5 hover:bg-white/[0.02] transition cursor-pointer"
+                  className="border-t border-white/5 hover:bg-white/2 transition cursor-pointer"
                 >
                   {/* Passenger */}
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
-                      <div className="h-11 w-11 rounded-full bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center font-bold text-black">
+                      <div className="h-11 w-11 rounded-full bg-linear-to-br from-amber-400 to-orange-500 flex items-center justify-center font-bold text-black">
                         {booking.avatar || passengerInitials}
                       </div>
 
@@ -197,6 +198,7 @@ const Table = ({
           )}
         </tbody>
       </table>
+      </div>
       {pagination && (
         <div className="flex items-center justify-between px-5 py-4 border-t border-white/5">
           <p className="text-sm text-gray-400">

@@ -15,7 +15,7 @@ export default function SummaryCard({
     };
 
     return (
-        <div className="bg-[#1B1F26] mb-4 rounded-2xl border border-white/5 p-6">
+        <div className="bg-surface-container mb-4 rounded-2xl border border-white/5 p-6">
             <div className="flex items-center gap-4">
 
                 <div className={`h-12 w-12 rounded-full flex items-center justify-center ${colors[color]}`}>

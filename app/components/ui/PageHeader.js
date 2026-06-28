@@ -18,21 +18,21 @@ export default function PageHeader({
         </p>
       </div>
 
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-3">
         <button
           onClick={onExport}
-          className="flex items-center gap-2 px-5 py-3 rounded-sm bg-[#1B1F26] border border-white/5 hover:bg-[#232832]"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-sm bg-[#1B1F26] border border-white/5 hover:bg-[#232832] text-sm"
         >
-          <Download size={18} />
+          <Download size={16} />
           Export CSV
         </button>
 
         <button
           onClick={onCreate}
           style={{ backgroundColor: "#FBBF24", color: "#0F172A" }}
-          className="flex items-center gap-2 px-6 py-3 rounded-xs bg-amber-300 text-cyan-950 font-semibold hover:bg-amber-300"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xs font-semibold hover:bg-amber-300 text-sm"
         >
-          <Plus size={18} />
+          <Plus size={16} />
           New Booking
         </button>
       </div>

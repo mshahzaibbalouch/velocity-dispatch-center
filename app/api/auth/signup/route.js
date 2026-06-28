@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dbConnect from "@/lib/mongodb";
 import User from "@/models/User";
+import { getDashboardRoute } from "@/lib/auth";
 
 export async function POST(req) {
   try {

@@ -8,7 +8,7 @@ const Map = dynamic(() => import("./Map"), {
 
 export default function LiveOperationsMap() {
   return (
-    <div className="bg-[#1B1F26] rounded-2xl border border-white/5 overflow-hidden h-full">
+    <div className="bg-surface-container rounded-2xl border border-white/5 overflow-hidden h-80 z-10">
       <Map />
     </div>
   );

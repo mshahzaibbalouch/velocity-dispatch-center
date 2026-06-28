@@ -27,7 +27,7 @@ export default function DashboardPage() {
   };
   return (
     <section>
-      <section className="grid gap-3 lg:grid-cols-4">
+      <section className="grid gap-3 grid-cols-2 lg:grid-cols-4">
         {statCards.map((card) => (
           <div key={card.title}>
             <Card {...card} />
