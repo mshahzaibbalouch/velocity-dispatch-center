@@ -21,7 +21,7 @@ export default function PageHeader({
       <div className="flex flex-wrap gap-3">
         <button
           onClick={onExport}
-          className="flex items-center gap-2 px-4 py-2.5 rounded-sm bg-[#1B1F26] border border-white/5 hover:bg-[#232832] text-sm"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-sm bg-surface-container border border-white/5 hover:bg-[#232832] text-sm"
         >
           <Download size={16} />
           Export CSV

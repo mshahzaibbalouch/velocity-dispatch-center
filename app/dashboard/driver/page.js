@@ -1,10 +1,7 @@
-import Navbar from '../../components/ui/Navbar';
-import Sidebar from '../../components/ui/Sidebar';
+import DriversContent from './DriversContent';
 
 export default function DriverDashboardPage() {
   return (
-    <div>
-    
-    </div>
+    <DriversContent />
   );
 }

@@ -36,7 +36,7 @@ export default function ProfilePage() {
                 alt="Admin"
                 width={80}
                 height={80}
-                className="h-20 w-20 rounded-2xl object-cover ring-4 ring-surface-container"
+                className="h-20 w-20 rounded-full object-cover ring-4 ring-surface-container"
               />
               <div className="mb-1">
                 <h1 className="text-xl font-bold text-white">Shahzaib Balouch</h1>

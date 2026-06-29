@@ -5,7 +5,7 @@ import { authorizeRequest } from '@/app/api/booking/auth';
 
 export async function GET(req) {
   try {
-    const auth = authorizeRequest(req, ['admin', 'dispatcher']);
+    const auth = authorizeRequest(req, ['admin']);
     if (auth.error) return auth.response;
 
     await dbConnect();

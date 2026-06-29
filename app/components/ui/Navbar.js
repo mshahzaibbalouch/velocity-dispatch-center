@@ -3,14 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import {
-  Bell,
-  Search,
-  CircleQuestionMark,
-  User,
-  Settings,
-  LogOutIcon,
-} from "lucide-react";
+import { Bell, Search, CircleQuestionMark, LogOutIcon } from "lucide-react";
 import Icon from "./Icon";
 
 export default function Navbar() {
@@ -18,11 +11,11 @@ export default function Navbar() {
   const [isProfileOpen, setProfileOpen] = useState(false);
 
   const profileItems = [
-    { label: "View profile", icon: User,      href: "/dashboard/profile"  },
-    { label: "Settings",     icon: Settings,  href: "/dashboard/settings" },
+    { label: "View profile", icon: "User", href: "/dashboard/profile" },
+    { label: "Settings", icon: "Settings", href: "/dashboard/settings" },
     {
       label: "Sign out",
-      icon: LogOutIcon,
+      icon: "LogOutIcon",
       action: async () => {
         try {
           const res = await fetch("/api/auth/logout", {
@@ -40,10 +33,8 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-20 border-b border-white/5 bg-surface-container-high px-4 lg:px-6 shadow-2xl backdrop-blur-xl">
-
         {/* Row 1 — always visible */}
         <div className="flex h-16 items-center justify-between gap-3">
-
           {/* Spacer for hamburger on mobile */}
           <div className="w-10 shrink-0 lg:hidden" />
 
@@ -59,12 +50,14 @@ export default function Navbar() {
 
           {/* Right actions */}
           <div className="flex items-center gap-1">
-
             {/* Bell */}
             <div className="relative">
               <button
                 type="button"
-                onClick={() => { setNotificationOpen(!isNotificationOpen); setProfileOpen(false); }}
+                onClick={() => {
+                  setNotificationOpen(!isNotificationOpen);
+                  setProfileOpen(false);
+                }}
                 aria-label="Notifications"
                 className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-on-surface hover:bg-white/5 transition"
               >
@@ -108,8 +101,11 @@ export default function Navbar() {
             <div className="relative">
               <button
                 type="button"
-                onClick={() => { setProfileOpen(!isProfileOpen); setNotificationOpen(false); }}
-                className="flex items-center gap-2.5 rounded-xl border border-white/10 px-2.5 py-1.5 text-sm text-on-surface hover:bg-white/5 transition"
+                onClick={() => {
+                  setProfileOpen(!isProfileOpen);
+                  setNotificationOpen(false);
+                }}
+                className="flex items-center gap-2.5 rounded-xl border border-white/10 px-2.5 py-1.5 text-sm text-on-surface transition"
               >
                 <span className="hidden sm:block font-medium">Shahzaib</span>
                 <Image
@@ -122,7 +118,7 @@ export default function Navbar() {
               </button>
 
               {isProfileOpen && (
-                <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-white/10 bg-surface-container-high p-2 shadow-2xl z-50">
+                <div className="absolute right-0 top-full mt-2 w-64 rounded-2xl border border-white/10 bg-surface-container-high p-2 shadow-2xl z-[9999]">
                   <div className="flex items-center gap-3 p-2 mb-1 border-b border-white/5 pb-3">
                     <Image
                       src="/assets/images/team/admin.png"
@@ -132,7 +128,9 @@ export default function Navbar() {
                       className="h-8 w-8 rounded-lg object-cover"
                     />
                     <div>
-                      <p className="text-sm font-semibold text-on-surface">Shahzaib Balouch</p>
+                      <p className="text-sm font-semibold text-on-surface">
+                        Shahzaib Balouch
+                      </p>
                       <p className="text-xs text-emerald-500">@admin</p>
                     </div>
                   </div>
@@ -143,26 +141,40 @@ export default function Navbar() {
                           key={item.label}
                           href={item.href}
                           onClick={() => setProfileOpen(false)}
-                          className={`w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-on-surface hover:bg-white/5 hover:text-amber-400 transition-all ${
-                            index < profileItems.length - 1 ? "border-b border-white/5" : ""
+                          className={`w-full border-2 hover:text-amber-400 flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-on-surfac transition-all cursor-pointer ${
+                            index < profileItems.length
+                              ? "border-b border-2 border-white/5"
+                              : ""
                           }`}
                         >
-                          <Icon icon={item.icon} className="h-4 w-4 text-amber-400 shrink-0" />
-                          {item.label}
+                          <Icon
+                            icon={item.icon}
+                            className="h-4 w-4 text-amber-400 shrink-0"
+                          />
+                          <span className="w-full text-start hover:text-amber-400 hover:ps-2 transition-all ">
+                            {item.label}
+                          </span>
                         </Link>
                       ) : (
                         <button
                           key={item.label}
                           type="button"
                           onClick={item.action}
-                          className={`w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-on-surface hover:bg-white/5 hover:text-amber-400 transition-all ${
-                            index < profileItems.length - 1 ? "border-b border-white/5" : ""
+                          className={`w-full flex items-center gap-3 px-2 py-2.5 rounded-xl text-sm font-medium text-on-surface hover:text-amber-400 transition-all ${
+                            index < profileItems.length - 1
+                              ? "border-b border-white/5"
+                              : ""
                           }`}
                         >
-                          <Icon icon={item.icon} className="h-4 w-4 text-amber-400 shrink-0" />
-                          {item.label}
+                          <Icon
+                            icon={item.icon}
+                            className="h-4 w-4 text-amber-400 shrink-0"
+                          />
+                          <span className="w-full text-start hover:text-amber-400  transition-all hover:ps-2">
+                            {item.label}
+                          </span>
                         </button>
-                      )
+                      ),
                     )}
                   </div>
                 </div>
@@ -182,16 +194,7 @@ export default function Navbar() {
             />
           </div>
         </div>
-
       </header>
-
-      {/* Backdrop — closes dropdowns */}
-      {(isNotificationOpen || isProfileOpen) && (
-        <div
-          className="fixed inset-0 z-20"
-          onClick={() => { setNotificationOpen(false); setProfileOpen(false); }}
-        />
-      )}
     </>
   );
 }

@@ -13,6 +13,35 @@ const UserSchema = new mongoose.Schema(
       enum: ["admin", "dispatcher", "driver"],
       default: "dispatcher",
     },
+    // Driver-specific fields
+    status: {
+      type: String,
+      enum: ["online", "offline", "on_trip", "break"],
+      default: "offline",
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+    rideCount: {
+      type: Number,
+      default: 0,
+    },
+    vehicleInfo: {
+      make: { type: String },
+      model: { type: String },
+      year: { type: Number },
+      licensePlate: { type: String },
+      color: { type: String },
+    },
+    phoneNumber: { type: String },
+    licenseNumber: { type: String },
+    totalEarnings: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );

@@ -15,11 +15,11 @@ import {
 import { useState } from "react";
 
 const navItems = [
-  { label: "Dashboard",     href: "/dashboard",               icon: LayoutDashboard },
-  { label: "Booking",       href: "/dashboard/booking",       icon: CalendarRange   },
-  { label: "Drivers",       href: "/dashboard/driver",        icon: MapPinHouse     },
-  { label: "Live Tracking", href: "/dashboard/tracking",      icon: Compass         },
-  { label: "Settings",      href: "/dashboard/settings",      icon: Settings        },
+  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
+  { label: "Booking", href: "/dashboard/booking", icon: CalendarRange },
+  { label: "Drivers", href: "/dashboard/driver", icon: MapPinHouse },
+  { label: "Live Tracking", href: "/dashboard/tracking", icon: Compass },
+  { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -56,14 +56,11 @@ export default function Sidebar() {
         `}
       >
         {/* Logo + close */}
-        <div className="flex h-18 items-center justify-between px-5 border-b border-white/5">
-          <Image
+        <div className="flex h-18  items-center justify-between px-5 border-b border-white/5">
+          <img
             src="/assets/images/logo.svg"
             alt="Velocity"
-            width={120}
-            height={40}
-            className="h-10 w-auto"
-            priority
+            className="h-17 w-auto"
           />
           <button
             onClick={() => setOpen(false)}
@@ -83,19 +80,20 @@ export default function Sidebar() {
                 key={label}
                 href={href}
                 onClick={() => setOpen(false)}
-                className={`
-                  group relative flex items-center gap-3.5 px-5 py-3
-                  text-sm font-medium transition-all duration-200
-                  ${
-                    active
-                      ? "bg-amber-400/10 text-amber-400 before:absolute before:left-0 before:top-0 before:h-full before:w-0.8 before:rounded-r before:bg-amber-400"
-                      : "text-surface-muted hover:bg-white/5 hover:text-white"
-                  }
-                `}
+                className={`group flex items-center gap-4 px-4 py-3 transition-all duration-300
+
+                ${
+                  active
+                    ? "bg-gray-500/20 border-r-solid text-amber-400 border-r-4 border-amber-400"
+                    : "text-surface-muted hover:bg-surface-container-high hover:text-amber-400"
+                }
+              `}
               >
                 <Icon
                   className={`h-4.5 w-4.5 shrink-0 transition-colors ${
-                    active ? "text-amber-400" : "text-white/40 group-hover:text-white"
+                    active
+                      ? "text-amber-400"
+                      : "text-white/40 group-hover:text-white"
                   }`}
                 />
 
@@ -109,7 +107,7 @@ export default function Sidebar() {
 
         {/* User profile */}
         <div className="border-t border-white/5 p-4">
-          <div className="flex items-center gap-3 rounded-xl bg-white/5 px-3 py-3">
+          <div className="flex items-center gap-3 rounded-xl">
             <Image
               src="/assets/images/team/admin.png"
               alt="Admin"

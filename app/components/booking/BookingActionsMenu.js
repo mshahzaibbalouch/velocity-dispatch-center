@@ -192,7 +192,7 @@ const BookingActionsMenu = ({ booking, onClose, onUpdate }) => {
       {/* Rating Modal */}
       {showRatingModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-[#1B1F26] border border-white/10 rounded-2xl p-6 max-w-sm w-full">
+          <div className="bg-surface-container border border-white/10 rounded-2xl p-6 max-w-sm w-full">
             <h3 className="text-lg font-bold text-white mb-4">
               Rate this Booking
             </h3>
